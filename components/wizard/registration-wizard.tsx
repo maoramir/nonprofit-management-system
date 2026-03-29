@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Building2, ClipboardList, MapPinned, Users } from "lucide-react";
 import { useRegistration } from "@/contexts/registration-context";
 import { wizardSteps } from "@/lib/constants";
@@ -49,13 +50,21 @@ export function RegistrationWizard() {
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={resetForm}
-            className="print-hidden rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-danger hover:text-danger"
-          >
-            נקה טופס
-          </button>
+          <div className="print-hidden flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/admin"
+              className="rounded-full border border-brand-500 px-5 py-3 text-center text-sm font-semibold text-brand-700 transition hover:bg-brand-50"
+            >
+              מסך ניהול
+            </Link>
+            <button
+              type="button"
+              onClick={resetForm}
+              className="rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-danger hover:text-danger"
+            >
+              נקה טופס
+            </button>
+          </div>
         </div>
 
         <div className="mt-8">

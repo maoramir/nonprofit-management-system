@@ -101,8 +101,9 @@ export function SummaryStep() {
       title="סיכום פרטי הטופס"
       description="לפניכם תצוגה מסודרת של כלל הנתונים שהוזנו. אפשר לעבור על המידע, לחזור לעריכה, להעתיק הכול או להשתמש בהדפסה ובשמירה כ-PDF מתוך הדפדפן."
     >
-      <div ref={summaryRef} className="space-y-6 print-surface">
-        <section className="rounded-3xl border border-slate-200 bg-slate-50/70 p-5">
+      <div className="space-y-6 print-surface">
+        <div ref={summaryRef} className="space-y-6">
+          <section className="rounded-3xl border border-slate-200 bg-slate-50/70 p-5">
           <h3 className="mb-4 text-xl font-bold text-ink">שם העמותה</h3>
           <div className="grid gap-4 md:grid-cols-3">
             {data.names.map((name, index) => (
@@ -117,7 +118,7 @@ export function SummaryStep() {
           </div>
         </section>
 
-        <section className="rounded-3xl border border-slate-200 bg-slate-50/70 p-5">
+          <section className="rounded-3xl border border-slate-200 bg-slate-50/70 p-5">
           <h3 className="mb-4 text-xl font-bold text-ink">מייסדים</h3>
           <div className="grid gap-4">
             {data.founders.map((founder, index) => (
@@ -146,7 +147,7 @@ export function SummaryStep() {
           </div>
         </section>
 
-        <section className="grid gap-6 lg:grid-cols-2">
+          <section className="grid gap-6 lg:grid-cols-2">
           <div className="rounded-3xl border border-slate-200 bg-slate-50/70 p-5">
             <h3 className="mb-4 text-xl font-bold text-ink">הכתובת הרשמית</h3>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -183,9 +184,9 @@ export function SummaryStep() {
               <SummaryItem label="אצל" value={data.mailingAddress.careOf || "-"} />
             </div>
           </div>
-        </section>
+          </section>
 
-        <section className="rounded-3xl border border-slate-200 bg-slate-50/70 p-5">
+          <section className="rounded-3xl border border-slate-200 bg-slate-50/70 p-5">
           <h3 className="mb-4 text-xl font-bold text-ink">פרטי עמותה</h3>
           <div className="grid gap-3 md:grid-cols-2">
             <SummaryItem label="תחום עיסוק עיקרי" value={data.organizationDetails.primaryField} />
@@ -203,9 +204,9 @@ export function SummaryStep() {
               value={translateYesNo(data.organizationDetails.managedUnderOtherCorporation)}
             />
           </div>
-        </section>
+          </section>
 
-        <section className="rounded-3xl border border-slate-200 bg-slate-50/70 p-5">
+          <section className="rounded-3xl border border-slate-200 bg-slate-50/70 p-5">
           <h3 className="mb-4 text-xl font-bold text-ink">מטרות</h3>
           <div className="space-y-3">
             {data.organizationDetails.objectives.map((objective, index) => (
@@ -219,7 +220,8 @@ export function SummaryStep() {
               </div>
             ))}
           </div>
-        </section>
+          </section>
+        </div>
 
         <div className="print-hidden flex flex-col gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:flex-wrap">
           <button
