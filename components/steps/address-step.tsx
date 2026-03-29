@@ -26,6 +26,7 @@ export function AddressStep() {
   const {
     register,
     handleSubmit,
+    getValues,
     watch,
     setValue,
     formState: { errors, isValid }
@@ -41,6 +42,10 @@ export function AddressStep() {
   const mailingType = watch("mailingAddress.type");
   const holderType = watch("registeredAddress.holderType");
   const founderIndex = watch("registeredAddress.founderIndex");
+  const selectedFounder =
+    holderType === "founderAddress" && founderIndex !== ""
+      ? data.founders[Number(founderIndex)]
+      : undefined;
 
   useEffect(() => {
     const subscription = watch((values) => {
@@ -55,30 +60,37 @@ export function AddressStep() {
     });
 
     return () => subscription.unsubscribe();
-  }, [watch, updateData, data.registeredAddress, data.mailingAddress]);
+  }, [watch, updateData]);
 
   useEffect(() => {
-    if (holderType !== "founderAddress") {
+    if (holderType !== "founderAddress" || !selectedFounder) {
       return;
     }
 
-    const founder = data.founders[Number(founderIndex)];
-    if (!founder) {
-      return;
-    }
+    const currentAddress = getValues("registeredAddress");
+    const founderAddress = selectedFounder.address;
 
-    setValue("registeredAddress.city", founder.address.city, { shouldDirty: true, shouldValidate: true });
-    setValue("registeredAddress.street", founder.address.street, { shouldDirty: true, shouldValidate: true });
-    setValue("registeredAddress.houseNumber", founder.address.houseNumber, {
-      shouldDirty: true,
-      shouldValidate: true
+    const fieldsToSync: Array<keyof RegisteredAddress> = [
+      "city",
+      "street",
+      "houseNumber",
+      "entrance",
+      "apartment",
+      "floor",
+      "postalCode",
+      "careOf"
+    ];
+
+    fieldsToSync.forEach((field) => {
+      const nextValue = founderAddress[field as keyof typeof founderAddress];
+      if (currentAddress[field] !== nextValue) {
+        setValue(`registeredAddress.${field}`, nextValue, {
+          shouldDirty: true,
+          shouldValidate: field === "city" || field === "street" || field === "houseNumber"
+        });
+      }
     });
-    setValue("registeredAddress.entrance", founder.address.entrance, { shouldDirty: true });
-    setValue("registeredAddress.apartment", founder.address.apartment, { shouldDirty: true });
-    setValue("registeredAddress.floor", founder.address.floor, { shouldDirty: true });
-    setValue("registeredAddress.postalCode", founder.address.postalCode, { shouldDirty: true });
-    setValue("registeredAddress.careOf", founder.address.careOf, { shouldDirty: true });
-  }, [holderType, founderIndex, data.founders, setValue]);
+  }, [holderType, selectedFounder, getValues, setValue]);
 
   const onSubmit = (values: AddressFormValues) => {
     updateData({
